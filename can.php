@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php session_start();?>
     <meta charset="UTF-8">
     <title>canvas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,6 +19,7 @@ html, body {
   overflow: hidden;
     font-family: 'Roboto Condensed', sans-serif;
 }
+
 .page {
   height: 100%;
   background-color: black;
@@ -87,6 +89,9 @@ html, body {
 .menu_items li:nth-child(3) {
   margin-left: 80px;
 }
+.menu_items li:nth-child(4) {
+  margin-left: 145px;
+}
 .menu_items a {
   display: block;
   text-decoration: none;
@@ -149,6 +154,9 @@ html, body {
 .shazam .menu_items li:nth-child(3) {
   transition-delay: 0.48s;
 }
+.shazam .menu_items li:nth-child(4) {
+  transition-delay: 0.49s;
+}
 body {
   color: #584e4a;
 }
@@ -182,7 +190,7 @@ section{
 .card {
   position:relative;
   width: 300px;
-  height:200%;
+  height:250%;
   background: linear-gradient(-45deg,#fe0847,#feae3f);
   border-radius:15px;
   margin: 0;
@@ -221,10 +229,6 @@ section{
     }
 
     /* visited link */
-    a.f:visited {
-      color: green;
-      text-decoration: none;
-    }
 
     /* mouse over link */
     a.f:hover {
@@ -303,15 +307,16 @@ section{
     </style>
 </head>
 <body>
-    <div class="page">
+    <div class="page">  
   <span class="menu_toggle">
     <i class="menu_open fa fa-bars fa-lg"></i>
     <i class="menu_close fa fa-times fa-lg"></i>
   </span>
   <ul class="menu_items">
-    <li><a href="#" class="m" class ="f"><i class="icon fa fa-home fa-2x"></i> Moar</a></li>
-    <li><a href="#" class="m"><i class="icon fa fa-pencil fa-2x"></i> Event Submission</a></li>
-    <li><a href="#" class="m"><i class="icon fa fa-credit-card-alt fa-2x"></i> Registeration</a></li>
+    <li><a href="can.html" class="m" class ="f"><i class="icon fa fa-home fa-2x"></i>Home</a></li>
+    <li><a href="event_reg.php" class="m"><i class="icon fa fa-pencil fa-2x"></i> Event Submission</a></li>
+    <li><a href="event_sub.html" class="m"><i class="icon fa fa-credit-card-alt fa-2x"></i> Registeration</a></li>
+    <li><a href="logout.php" class="m"><i class="icon fa fa-sign-out fa-2x"></i> Logout</a></li>
   </ul>
   <main class="content">
     <div class="content_inner">
@@ -326,7 +331,7 @@ section{
                     $res=mysqli_query($conn,$query);
                     while ($row = mysqli_fetch_assoc($res)) {
                     echo "<div class='col'>";
-                    echo "   <a href='#' class='f'>";
+                    echo "   <a href='redirect.php?a=$row[EVENT_NAME]' class='f'>";
                     echo "   <div class='card'>";
                     echo "       <div class='title'>";
                     echo "       <i class='fa fa-paper-plane'></i>";
@@ -340,66 +345,88 @@ section{
                     echo "           </div>";
                     echo "       </div>";
                     echo "       </div>";
-                    echo "   </a>";
-                }
+                    echo "   </a>";}
                     ?>
                     </div>
-                  </div>
-              </div>                
-            </section>
+                </div>
+            </div>                
+        </section>
             <h1>Events Popular Amongst Your Branch</h1>
             <section>
                 <div class="container-fluid">
                   <div class="container">
                     <div class ="row">
-                      <div class="col">
-                        <a href="#" class="f">
-                          <div class="card">
-                            <div class="title">
-                              <i class="fa fa-paper-plane"></i>
-                              <h2>Event Name</h2>
-                            </div>
-                            <div class="option">
-                                <ul>
-                                    <li><p>Details about the Event!</p></li>
-                                    <li>Fees ###<i class="fa fa-dollar-sign"></i></li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                      <div class="col">
-                        <a href="#" class="f">
-                          <div class="card">
-                            <div class="title">
-                              <i class="fa fa-paper-plane"></i>
-                              <h2>Event Name</h2>
-                            </div>
-                            <div class="option">
-                                <ul>
-                                    <li><p>Details about the Event!</p></li>
-                                    <li>Fees ###<i class="fa fa-dollar-sign"></i></li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                      <div class="col">
-                        <a href="#" class="f">
-                          <div class="card">
-                            <div class="title">
-                              <i class="fa fa-paper-plane"></i>
-                              <h2>Event Name</h2>
-                            </div>
-                            <div class="option">
-                                <ul>
-                                    <li><p>Details about the Event!</p></li>
-                                    <li>Fees ###<i class="fa fa-dollar-sign"></i></li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
+                    <?php
+                    $uname=$_SESSION['uname'];
+                    function card($res){
+                        while ($row = mysqli_fetch_assoc($res)) {
+                        echo "<div class='col'>";
+                        echo "   <a href='redirect.php?selectedEvent=$row[EVENT_NAME]' class='f'>";
+                        echo "   <div class='card'>";
+                        echo "       <div class='title'>";
+                        echo "       <i class='fa fa-paper-plane'></i>";
+                        echo "       <h2>". $row['EVENT_NAME'] ."</h2>";
+                        echo "       </div>";
+                        echo "      <div class='option'>";
+                        echo "           <ul>";
+                        echo "               <li><p>Details about the Event!</p></li>";
+                        echo "               <li>Fees ###<i class='fa fa-dollar-sign'></i></li>";
+                        echo "           </ul>";
+                        echo "           </div>";
+                        echo "       </div>";
+                        echo "       </div>";
+                        echo "   </a>";}}
+                    $conn=mysqli_connect("localhost","newuser1","","registerations");
+                    if (preg_match("/BCE/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BCE%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BCB/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BCB%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BCI/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BCI%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BME/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BME%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BIT/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BIT%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BEC/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BEC%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BBT/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BBT%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);
+                        card($res);}
+                    elseif (preg_match("/BEE/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BEE%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    elseif (preg_match("/BCM/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BCM%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    elseif (preg_match("/BCL/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BCL%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    elseif (preg_match("/BEM/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BEM%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    elseif (preg_match("/BIS/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BIS%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    elseif (preg_match("/BMA/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%BMA%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    elseif (preg_match("/MSH/", $uname)){
+                        $query="select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations where (REGISTER_NUMBER like '%MSH%') group by EVENT_NAME order by sum(NUMBER_OF_PARTICIPANTS) DESC limit 3;";
+                        $res=mysqli_query($conn,$query);                         card($res);}
+                    ?>
                         </div>
                       </div>
                   </div>                
