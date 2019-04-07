@@ -1,0 +1,1 @@
+select  EVENT_NAME,sum(NUMBER_OF_PARTICIPANTS) from registerations group by EVENT_NAME order by (sum(NUMBER_OF_PARTICIPANTS)) DESC limit 3;

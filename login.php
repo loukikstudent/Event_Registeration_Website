@@ -1,4 +1,5 @@
 <?php
+session_start();
 $uname=$_POST["uname"];
 $conn=mysqli_connect("localhost","newuser","","registerations");
 $query="select username,password from user where username='$uname';";
