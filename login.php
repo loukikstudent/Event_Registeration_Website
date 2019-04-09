@@ -33,5 +33,4 @@ while ($row=mysqli_fetch_array($res1)){
 $_SESSION['start'] = time(); // Taking now logged in time.
             // Ending a session in 30 minutes from the starting time.
 $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
-header('Location: First_page.php');
 ?>

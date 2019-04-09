@@ -302,6 +302,20 @@ section{
 .card:hover{
   transform: scale(1.1);
 }
+.ev{
+  background:none;
+  border-radius:5px;
+  border : 5px;
+}
+th{
+  padding : 15px;
+  border:2px;
+}
+td{
+  padding :15px;
+  border:2px;
+  background:none;
+}
   
     
     </style>
@@ -314,8 +328,8 @@ section{
   </span>
   <ul class="menu_items">
     <li><a href="can.html" class="m" class ="f"><i class="icon fa fa-home fa-2x"></i>Home</a></li>
-    <li><a href="event_reg.php" class="m"><i class="icon fa fa-pencil fa-2x"></i> Event Submission</a></li>
-    <li><a href="event_sub.html" class="m"><i class="icon fa fa-credit-card-alt fa-2x"></i> Registeration</a></li>
+    <li><a href="event_sub.html" class="m"><i class="icon fa fa-pencil fa-2x"></i> Event Submission</a></li>
+    <li><a href="event_reg.php" class="m"><i class="icon fa fa-credit-card-alt fa-2x"></i> Registeration</a></li>
     <li><a href="logout.php" class="m"><i class="icon fa fa-sign-out fa-2x"></i> Logout</a></li>
   </ul>
   <main class="content">
@@ -361,7 +375,7 @@ section{
                     function card($res){
                         while ($row = mysqli_fetch_assoc($res)) {
                         echo "<div class='col'>";
-                        echo "   <a href='redirect.php?selectedEvent=$row[EVENT_NAME]' class='f'>";
+                        echo "   <a href='redirect.php?a=$row[EVENT_NAME]' class='f'>";
                         echo "   <div class='card'>";
                         echo "       <div class='title'>";
                         echo "       <i class='fa fa-paper-plane'></i>";
@@ -430,7 +444,26 @@ section{
                         </div>
                       </div>
                   </div>                
-                </section> 
+                </section>
+          <?php
+            $uname=$_SESSION['uname'];
+            $conn=mysqli_connect("localhost","newuser1","","registerations");
+            $query1="select event_name,payment_status from registerations where (register_number = '$uname') UNION  select event_name,payment_status from newreg where (register_number = '$uname');";
+            $res=mysqli_query($conn,$query1);
+            echo "<table class='ev'>";
+            echo "<tr>";
+            echo "<th> Events</th>";
+            echo "<th> Status</th>";
+            echo "</tr>";
+            while($row=mysqli_fetch_assoc($res)){
+              echo "<tr>";
+              echo "<td>$row[event_name]</td>";
+              echo "<td>$row[payment_status]</td>";
+              echo "</tr>";
+            }
+            echo "</table>";
+
+          ?>  
     </div>
   </main>
 </div>

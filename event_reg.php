@@ -9,7 +9,8 @@
   </head>
   <body>
       <div class="signup-box">
-    <form class="signup-form" action="generate.php" method="get">
+    <form class="signup-form" action="generate.php" method="post">
+        <h2>Event Registerations</h2>
             <?php
             $conn=mysqli_connect("localhost","newuser1","","registerations");
             if (isset($_SESSION['selectedEvent'])){
@@ -31,6 +32,17 @@
                 elseif($_SESSION['type']="external"){
                     echo "<input type='text' class = 'txtb' name = 'name' placeholder='Name'>";
                 }
+                echo "<input type='text' class = 'txtb' name = 'nop' placeholder='Number of Particpants'>";
+            //$nop = $_GET['nop'];
+            $nop=1;
+            $query="select distinct AMOUNT from registerations where (EVENT_NAME = '$event_name') limit 1;";
+            $res1=mysqli_query($conn,$query);
+            while($row=mysqli_fetch_assoc($res1)){
+                
+                echo "<select name='amount' class='txtb1'>";
+                echo "<option value=$row[AMOUNT] class='txtb1'>$row[AMOUNT]</option>";
+                echo "</select>";
+            }
             }
             else{
                 $query="select distinct CATEGORY_NAME from registerations;";
@@ -40,7 +52,8 @@
                     echo "<option value=$row[CATEGORY_NAME] class='txtb1'>$row[CATEGORY_NAME]</option>";
                 }
                 echo "</select>";
-                $query="select distinct EVENT_NAME from registertions;";
+                $query="select distinct EVENT_NAME from registerations;";
+                $res=mysqli_query($conn,$query);
                 echo "<select name='event_name' class='txtb'";
                 while ($row=mysqli_fetch_assoc($res)){
                     echo "<option value=$row[EVENT_NAME] class='txtb1'>$row[EVENT_NAME]</option>";
@@ -54,18 +67,7 @@
                 }
 
             }
-            echo "<input type='text' class = 'txtb' name = 'nop' placeholder='Number of Particpants'>";
-            //$nop = $_GET['nop'];
-            $nop=1;
-            $query="select distinct AMOUNT from registerations where (EVENT_NAME = '$event_name') limit 1;";
-            $res1=mysqli_query($conn,$query);
-            while($row=mysqli_fetch_assoc($res1)){
-                
-                echo "<select name='amount' class='txtb1'>";
-                echo "<option value=$row[AMOUNT] class='txtb1'>$row[AMOUNT]</option>";
-                echo "</select>";
-            }
-            echo "<select class='txtb1' name='payment'>";
+            echo "<select class='txtb1' name='paymentmode'>";
             echo    "<option class='txtb1' value='Cash'>Cash</option>";
             echo    "<option class='txtb1' value='card'>Cerdit/Debit Card</option>";
             echo    "<option class='txtb1' value='netbanking'>NetBanking</option>";
